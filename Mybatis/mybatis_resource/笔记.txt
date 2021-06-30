@@ -1,0 +1,12 @@
+mybatis的运行原理
+1.获取sqlSessionFactory对象：
+   解析文件的每一个信息保存在 Configuration中，返回包含Configuration和defaultSqlSessionFactory对象
+   注意：【MappedStatement】代表一个增删改查中的详细信息
+2.获取SqlSession对象
+   返回DefaultSqlSession对象 包含Executor和Configuration
+   这一步主要会创建Executor对象
+3.getMapper 获取接口的代理对象（MapperProxy）
+     getMapper 使用MapperProxyFactory创建一个MapperProxy对象
+     代理对象中包含DefaultSqlSession（Executor）
+4.Mapper实现怎么实现增删改查
+

@@ -1,0 +1,19 @@
+Ioc  操作bean管理
+1.什么是bean管理 ：两个操作 spring创建对象  spring注入属性
+2.Bean管理有两种实现的方式 XML文件的方式 注解的方式
+  --xml的方式：
+  1.创建对象
+    <bean id="User" class="com.jiang.spring.User"></bean>
+    *id属性：唯一表示  *Class：类的全路径  *name:不用
+    创建对象默认也是通过无参构造创建的
+  2.注入属性：
+     使用set方法进行注入  用property属性进行注入；
+     使用有参构造进行注入
+     可以使用p名称空间的注入 在bean标签中注入
+    可以注入其他属性的值
+      （1）字面量  null值 属性值包含一些特殊符号
+     还有其他的属性
+     外部bean
+       创建service 和dao   在service 中注入Dao
+     内部bean和级联赋值
+

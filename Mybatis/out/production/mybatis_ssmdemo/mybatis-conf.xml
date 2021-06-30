@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+<!--    settings 包含很多重要设置项-->
+    <settings>
+<!-- 这里是开启驼峰命名法数据库表中的字段和sql映射文件中的sql语句满足驼峰命名就会映射成功-->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+
+<!--        懒加载-->
+        <setting name="cacheEnabled" value="true"/>
+        <setting name="lazyLoadingEnabled" value="true"/>
+        <setting name="aggressiveLazyLoading" value="false"/>
+    </settings>
+<!--    typeAliases 别名处理器  可以为我们的类起别名
+        默认是小写employee  alias 新的别名 -->
+    <typeAliases>
+<!--        1.<typeAlias type="com.Employee"  alias="emp"></typeAlias>-->
+<!--        2.批量起别名 package 为包下或者子包下的所有类起别名 别名不区别大小写要是子包下有一样的类的名称就可以再类
+            的上方用@alias注解起个新的别名-->
+        <package name="com.jiang.mybatis"/>
+    </typeAliases>
+</configuration>

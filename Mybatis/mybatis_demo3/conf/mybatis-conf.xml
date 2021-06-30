@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+<!--    resource:引入类路径下的资源  url：引入网络上的或者瓷盘上的文件-->
+    <properties resource="jdbc.properties"></properties>
+<!--    settings 包含很多重要设置项-->
+    <settings>
+<!-- 这里是开启驼峰命名法数据库表中的字段和sql映射文件中的sql语句满足驼峰命名就会映射成功-->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+<!--        开启全局二级缓存的机制-->
+        <setting name="cacheEnabled" value="true"/>
+<!--        延时加载 懒加载-->
+        <setting name="lazyLoadingEnabled" value="true"/>
+        <setting name="aggressiveLazyLoading" value="false"/>
+    </settings>
+<!--    typeAliases 别名处理器  可以为我们的类起别名
+        默认是小写employee  alias 新的别名 -->
+    <typeAliases>
+<!--        1.<typeAlias type="com.Employee"  alias="emp"></typeAlias>-->
+<!--        2.批量起别名 package 为包下或者子包下的所有类起别名 别名不区别大小写要是子包下有一样的类的名称就可以再类
+            的上方用@alias注解起个新的别名-->
+
+        <package name="com.jiang.mybatis"/>
+    </typeAliases>
+<!-- 环境们  mybatis可以配置多种环境
+          environment 配置一种环境 有个标签id id代表当前环境的唯一标识
+          必须要有两个标签
+          transactionManager：有个属性  type  事务处理的类型 有两种JDBC MANAGED 如果是自定义的事务管理器  type 就要用类的全类名
+          DataSource 数据源： 类型 UNPOOLED、POOLED、JNDI -->
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${driver}"/>
+                <property name="url" value="${url}"/>
+                <property name="username" value="${username}"/>
+                <property name="password" value="${password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+<!---->
+    <!--将Sql映射文件注册
+           resource 引用类路径下的映射文件
+           url  引用网络下的映射文件 huozhe磁盘下的 映射文件
+           class 注册接口
+              有sql映射文件映射文件要和接口同名并且和接口放在同一个目录
+              没有sql映射文件  直接将sql语句用注解写在接口上面
+              下面有个例子
+                     比较重要的dao用映射文件
+                     不重要简单的 可以用注解
+            可以用批量注册映射文件
+     -->
+    <mappers>
+        <!--将我们写好的sql映射文件一定要配置到全局的xml文件中（mybatis-conf.xml）-->
+<!--        <mapper resource="EmployeeMapper.xml"/>-->
+<!--        <mapper class="com.EmpAnnotationMapper"></mapper>-->
+<!--        批量注册 这里直接设置了 类的包名所以要将sql映射文件放到与包名一个目录下才能找到这个接口-->
+        <package name="com.jiang.employeeDao"/>
+    </mappers>
+</configuration>

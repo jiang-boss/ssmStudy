@@ -1,0 +1,33 @@
+ssm整合开发
+springMVC：视图层 负责接受请求  显示处理的结果
+spring：业务层  管理service Dao 工具类对象的
+mybatis：持久层  访问数据库处理shujude
+用户发起请求  springMVC接受---》spring中的service对象处理业务---》mybatis访问数据库处理数据
+
+1springMVC容器 管理controller控制器对象
+2 spring容器 管理service Dao工具类对象
+我们要做的把使用的对象 交给合适的容器创建管理 。把controller还有web开发的相关对象交给springMVC容器
+这些web用的对象写在springMVC容器中
+   service dao 对象定义在spring配置文件中 让spring管理对象
+
+spring和springmvc容器是有关系的 关系已经确定好了
+springmvc容器是spring容器的子容器  类似于java中的继承。子类是可以访问父类中内容
+在子容器中controller可以访问父容器中的service对象  就可以实现controller使用service对象
+
+ssm项目实现步骤
+（先把数据库的表创建好）
+1. 新建maven WEB项目
+2。 加入依赖   springmvc  spring  mybatis jackson mysql驱动  druid连接池依赖  jsp servlet
+3.写web.xml
+     1）注册中央调度器目的 创建springmvc容器才能创建controller类的对象
+                          创建的是Servlet 才能接受用户的请求
+     2）注册spring的监听器：ContextLoaderListener 目的：创建spring容器对象才能创建service dao等对象
+     3）注册字符集过滤器，解决post请求乱码的问题
+4.创建包  Controller包  service  dao 实体类的包
+5.写spring springmvc mybatis的配置文件（主要）
+     1）springmvc配置文件
+     2）spring配置文件
+     3）mybatis配置文件
+     4）数据库属性的配置文件
+6.写代码  dao接口和mapper文件  service和实现类 controller，实体类
+7.写jsp页面

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <bean id="userService" class="com.jiang.service.UserService">
+<!--        外部注入 将外部的bean注入进来 name 属性名称  ref值创建UserDao的 bean标签的id值-->
+        <property name="userDao" ref="UserDaoImpl"></property>
+    </bean>
+<!--    这里class要写UserDao实现类的全类名-->
+    <bean id="UserDaoImpl" class="com.jiang.Dao.impl.UserDaoImpl"></bean>
+</beans>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <bean id="order" class="com.jiang.spring.Order" init-method="initMethod" destroy-method="destoryMethod">
+        <property name="name" value="电脑"></property>
+    </bean>
+<!--    配置后置处理器这个处理器给当前的xml文件中的所有的bean都会添加后置处理器-->
+    <bean id="beanPost" class="com.jiang.spring.MyBeanPost"></bean>
+</beans>

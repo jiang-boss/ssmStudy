@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--用接口就要用接口的全类名-->
+<mapper namespace="com.jiang.employeeDao.EmployeeMapper">
+<!--id  唯一标识
+     resultType 返回值类型
+     注意:这里用接口的时候就要用接口中的那个方法-->
+    <select id="getInstance" resultType="com.jiang.mybatis.Employee">
+        select * from tab_employee where id = #{id}
+    </select>
+</mapper>

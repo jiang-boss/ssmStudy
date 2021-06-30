@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!--    settings 包含很多重要设置项-->
+    <settings>
+        <!-- 这里是开启驼峰命名法数据库表中的字段和sql映射文件中的sql语句满足驼峰命名就会映射成功-->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+    <!--    typeAliases 别名处理器  可以为我们的类起别名
+            默认是小写employee  alias 新的别名 -->
+    <typeAliases>
+        <package name="com.jiang.domain"/>
+    </typeAliases>
+    <mappers>
+<!--        使用package的要求 ：
+                       mapper文件的名称和到接口名必须完全相同 包括大小写
+                       mapper文件的和dao接口必须在一个目录
+ -->
+        <package name="com.jiang.dao"/>
+    </mappers>
+</configuration>

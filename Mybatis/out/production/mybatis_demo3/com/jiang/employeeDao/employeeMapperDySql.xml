@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jiang.employeeDao.employeeMapperDySql">
+<!--
+动态sql的学习
+if
+choose (when, otherwise)
+trim (where, set)
+foreach
+-->
+    <select id="getEmpByDyIf" resultType="employee">
+        /**
+          这里这样操作会让有时候的拼串失败
+         */
+        select *
+        from tab_employee where
+        <!--test 判断表达式 和el表达式差不多-->
+        <if test="id!=null">
+            id=#{id}
+        </if>
+        <if test="lastname!=null &amp;&amp; lastname!=&quot;&quot;">
+            and last_name like #{lastname}
+        </if>
+        <if test="email!=null and email.trim()!=&quot;&quot;">
+            and email=#{email}
+        </if>
+        <if test="gender==0 or gender==1">
+            gender=#{gender}
+        </if>
+    </select>
+<!--    这里使用trim来构成sql语句   自定义字符串截取-->
+    <select id="getEmpByDyTrim" resultType="employee">
+        select *
+        from tab_employee
+        <!--test 判断表达式 和el表达式差不多 prefix-->
+        <trim prefix="where" prefixOverrides="and" >
+            <if test="id!=null" >
+                id=#{id}
+            </if>
+            <if test="lastname!=null &amp;&amp; lastname!=&quot;&quot;">
+                and last_name like #{lastname}
+            </if>
+            <if test="email!=null and email.trim()!=&quot;&quot;">
+                and email=#{email}
+            </if>
+            <if test="gender==0 or gender==1">
+                and  gender=gender
+            </if>
+        </trim>
+    </select>
+<!--choose选择分支  只会查询一个条件-->
+    <select id="getEmpByDyChoose" resultType="employee">
+        select * from tab_employee
+        <where>
+           <choose>
+               <when test="id!=null">id=#{id}</when>
+               <when test="lastname!=null &amp;&amp; lastname!=&quot;&quot;">last_name like #{lastname}</when>
+               <when test="email!=null and email.trim()!=&quot;&quot;">email#{eamil}</when>
+               <otherwise>gender=0</otherwise>
+           </choose>
+        </where>
+    </select>
+<!--   更新的方法-->
+    <update id="updateEmpByDySet">
+        update tab_employee
+<!--        <set>&lt;!&ndash;这里使用trim也可以&ndash;&gt;-->
+<!--            <if test="lastname!=null">last_name=#{lastname},</if>-->
+<!--            <if test="email!=null">email=#{email},</if>-->
+<!--            <if test="gender!=null">gender=#{gender}</if>-->
+<!--        </set>-->
+        <trim prefix="set" suffixOverrides=",">
+            <if test="lastname!=null">last_name=#{lastname},</if>
+            <if test="email!=null">email=#{email},</if>
+            <if test="gender!=null">gender=#{gender}</if>
+        </trim>
+        where id=#{id}
+    </update>
+
+
+<!--    foreach 查询多个 collection指的是要遍历的集合  item 遍历出来的元素
+         separator 遍历出来的元素之间的分隔符  open close 开始和结束  -->
+    <select id="getEmpByDyForeach" resultType="employee">
+        select *
+        from tab_employee
+        <foreach collection="ids" item="item_ids" separator="," open="where id in (" close=")" >
+            #{item_ids}
+        </foreach>
+    </select>
+
+<!--批量操作的演示-->
+    <insert id="addEmps">
+        insert into tab_employee (last_name,email,gender,d_id) values
+        <foreach collection="emps" separator="," item="emp">
+            (#{emp.lastname},#{emp.emails},#{emp.gender},#{emp.dept.id})
+        </foreach>
+    </insert>
+
+<!--    这种的格式不支持  要在 jdbc.properties中加个属性 这个分号分割可以批量进行其他操作-->
+<!--    <insert id="addEmps">-->
+<!--        <foreach collection="emps" separator=";" item="emp">-->
+<!--            insert into tab_employee (<include refid="innerColumn"></include>) values-->
+<!--            (#{emp.lastname},#{emp.emails},#{emp.gender},#{emp.dept.id})-->
+<!--        </foreach>-->
+<!--    </insert>-->
+
+
+    <!--两个内置参数  判断
+          _parameter: 代表整个参数
+               单个参数  就是指的这个参数
+               多个参数   参数会被封装成一个map  这里就是指的这个map
+         _databaseId  如果在全局配置文件中配置了databaseIdProvider标签
+              _databaseId就是代表当前数据库的别名 （可以选择数据库进行操作）
+      -->
+
+    <select id="getEmpByDyInnerParameter" resultType="employee">
+          <!--绑定器-->
+        <bind name="_lastname" value="'%'+lastname+'%'"/>
+        select * from tab_employee
+        <if test="_parameter!=null">
+        where last_name like  #{_lastname}
+        </if>
+    </select>
+
+    <!--抽取可重用的sql片段  include来应用-->
+    <sql id="innerColumn">
+        last_name,email,gender,d_id
+    </sql>
+</mapper>

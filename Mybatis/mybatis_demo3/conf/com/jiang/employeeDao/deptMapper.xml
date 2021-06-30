@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jiang.employeeDao.deptMapper">
+
+<!--    这里是查找员工时候查找部门的分布查询的第二部-->
+    <select id="getDept" resultType="dept">
+        select *
+        from tab_dept where id=#{id};
+    </select>
+
+<!--     did   dept_name, ||  员工  ：eid  last_name email gender-->
+    <resultMap id="mydept" type="dept">
+        <id column="did" property="id"></id>
+        <result column="dept_name" property="deptName"></result>
+<!--  级联查询   定义集合的类型的封装属性 （一个部门中有多个员工）  ofType指定集合里面的元素类型  -->
+        <collection property="employees" ofType="employee">
+            <id column="eid" property="id"></id>
+            <result column="last_name" property="lastname"></result>
+            <result column="email" property="email"></result>
+            <result column="gender" property="gender"></result>
+        </collection>
+    </resultMap>
+    <select id="getDeptById" resultMap="mydept">
+        SELECT d.id did,d.dept_name dept_name,
+               e.id eid,e.last_name last_name,e.email email,e.gender gender
+        FROM tab_dept d LEFT JOIN tab_employee e on d.id=e.d_id
+        WHERE d.id=#{id}
+    </select>
+
+<!--    分布查询  -->
+    <resultMap id="mydepts" type="dept">
+        <id column="id" property="id"></id>
+        <result column="dept_name" property="deptName"></result>
+        <collection property="employees" select="com.jiang.employeeDao.EmployeeMapperPlus.getEmpByDeptId" column="id">
+        </collection>
+    </resultMap>
+    <select id="getDeptByIdStep" resultMap="mydepts">
+        select id, dept_name
+        from tab_dept
+        where id = #{id}
+    </select>
+</mapper>

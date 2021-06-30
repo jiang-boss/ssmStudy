@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--用接口就要用接口的全类名-->
+<mapper namespace="com.jiang.employeeDao.EmployeeMapper">
+
+    <select id="getEmps" resultType="employee">
+        select * from tab_employee
+    </select>
+</mapper>

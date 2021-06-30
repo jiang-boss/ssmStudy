@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<!--这配置文件就是告诉 mybatis 如何逆向生成文件  sql映射文件  Javabean 等-->
+<generatorConfiguration>
+    <context id="DB2Tables" targetRuntime="MyBatis3">
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/mybatis"
+                        userId="root"
+                        password="123">
+        </jdbcConnection>
+<!--        java的类型解析器 -->
+        <javaTypeResolver >
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>
+<!--javaModelGenerator 指定Javabean的生成策略 targetPackage 指定目标报名 targetProject 目标工程  -->
+        <javaModelGenerator targetPackage="com.jiang.mybatis" targetProject=".\src">
+            <property name="enableSubPackages" value="true" />
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+<!--sqlMapGenerator sql映射文件的生成策略  -->
+        <sqlMapGenerator targetPackage="com.jiang.employeeDao"  targetProject=".\conf">
+            <property name="enableSubPackages" value="true" />
+        </sqlMapGenerator>
+<!--javaClientGenerator 制定mapper接口的代码生成器-->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.jiang.employeeDao"  targetProject=".\src">
+            <property name="enableSubPackages" value="true" />
+        </javaClientGenerator>
+<!--        指定要逆向生成哪些表-->
+        <table tableName="tab_dept" domainObjectName="Dept"></table>
+        <table tableName="tab_employee" domainObjectName="Employee"></table>
+    </context>
+</generatorConfiguration>

@@ -1,0 +1,14 @@
+
+异常处理的步骤 ：
+1新建的maven web项目
+2加入依赖
+3新建一个自定义的异常 MyUserException  再定义它的子类NameException AgeException
+4.在controller中抛出异常NameException ，AgeException
+5.创建一个普通的类作用全局异常的处理类
+  1）在类的上面添加@controllerAdvice注解
+  2）在类中定义方法  方法的上面添加@ExceptionHandler
+6.创建处理异常的视图页面
+7.创建springMVC的配置文件
+  1）组件扫描器 扫描@controller注解
+  2）组件扫描器 扫描@controllerAdvice注解
+  3）声明注解驱动

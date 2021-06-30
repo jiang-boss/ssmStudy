@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+<!-- 引入名称空间 util  抽取list集合注入属性  -->
+    <util:list id="bookList">
+        <value>围城</value>
+        <value>朝花夕拾</value>
+        <value>java从入门到精通</value>
+    </util:list>
+    <bean id="book" class="com.jiang.spring.Book">
+<!--        注入list集合-->
+        <property name="list" ref="bookList">
+        </property>
+    </bean>
+</beans>

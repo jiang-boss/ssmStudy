@@ -1,0 +1,21 @@
+讨论jsp的请求的地址前面加上/和不加/的区别
+   在jsp  和html中使用的访问的地址都是相对地址
+   地址分类：
+      绝对地址：带有协议的地址
+      相对地址： 没有协议开头的   user/some.do    /user/some.do
+                相对地址不能独立使用 必须有个参考地址一起使用  通过参考地址和相对地址本身才能指定资源
+    参考地址：
+     情况一：在你的页面中 访问的地址不加 /
+                                        地址                      资源
+     index.jsp页面的地址是   http://localhost:8080/MVC_path/   index.jsp
+    在index.jsp 发起user/wode.do请求  访问地址 http://localhost:8080/MVC_path/user/wode.do
+
+
+    当你的地址没有斜杠开头例如 user/wode.do 当你点击连接时  访问的地址是当前的页面的地址加上 请求的地址
+     当前页面的地址：http://localhost:8080/MVC_path/ + 请求的地址 user/wode.do
+
+    情况二：在你的页面中 访问的地址加 /
+    在index.jsp 发起/user/wode.do请求 访问地址 http://localhost:8080/user/wode.do
+    注意这是少了个工程名 参考地址只有到端口号这一部分
+
+      如果你的资源不能访问 用EL表达式 ${pageContext.request.contextPath} 这个表达式代表项目的工程名

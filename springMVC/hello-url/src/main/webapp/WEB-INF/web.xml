@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+         version="4.0">
+    <servlet>
+<!--        中央调度器-->
+        <servlet-name>springmvc</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:spring2.xml</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>springmvc</servlet-name>
+<!--        自己的项目中使用斜杆 tomcat中的默认/就被覆盖导致所有的静态资源都是被中央调度器处理
+            默认情况下DispatcherServlet没有处理静态资源的能力 所以访问静态资源都是404
+            动态资源some。do是可以访问的
+            -->
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+<!--    第一种处理静态资源的方法：
+        需要在springMVC的配置中加入<mvc:default-servlet-handler>
+        原理是：加入这个标签 框架会创建控制器对象DefaultServletHttpRequestHandler（类似我们的controller对象控制器）
+            DefaultServletHttpRequestHandler这个对象可以接收到的请求转发给Tomcat的default这个Servlet
+        -->
+</web-app>

@@ -1,0 +1,4 @@
+1.先引入依赖
+2.设置数据源
+3.配置jdbcTemplate对象 注入DataSource
+4.创建service类创建Dao类在dao的实现类中注入jdbcTemplate对象

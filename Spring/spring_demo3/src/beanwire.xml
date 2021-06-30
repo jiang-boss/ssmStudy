@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+<!--    实现自动装配 在emp中自动装配dept的bean实例
+  byName是根据名称装配 装配的id值要和emp中的属性名称相同 注入bean的属性的名称和这里bean标签的id相同（de）
+  byType 是根据类型装配  要是有多个相同类型的bean就会出错
+                    -->
+    <bean id="emp" class="com.jiang.spring.autowire.emp" autowire="byType">
+
+        <property name="name" value="姜春雨"></property>
+    </bean>
+    <bean id="de" class="com.jiang.spring.autowire.dept">
+        <property name="name" value="技术部"></property>
+    </bean>
+</beans>

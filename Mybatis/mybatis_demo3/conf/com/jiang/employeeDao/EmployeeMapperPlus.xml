@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--这里一定是接口的全类名-->
+<mapper namespace="com.jiang.employeeDao.EmployeeMapperPlus">
+<!--    type 自定义规则employee类型的规则
+        id:唯一的标识符
+          封装规则-->
+    <resultMap id="myEmp" type="employee">
+        <id column="id" property="id"></id>
+        <result column="last_name" property="lastname"></result>
+        <result column="email" property="email"></result>
+        <result column="gender" property="gender"></result>
+        <result column="d_id" property="dept.id"></result>
+    </resultMap>
+    <select id="getEmp" resultMap="myEmp">
+         select  id,last_name,email,gender from tab_employee where id=#{id}
+    </select>
+<!--    查询员工对应的部门 两张表联合查询 -->
+    <resultMap id="myEmp2" type="employee">
+        <id column="id" property="id"></id>
+        <result column="last_name" property="lastname"></result>
+        <result column="email" property="email"></result>
+        <result column="gender" property="gender"></result>
+        <result column="did" property="dept.id"></result>
+        <result column="dept_name" property="dept.deptName"></result>
+    </resultMap>
+
+
+    <resultMap id="myEmp3" type="employee">
+        <id column="id" property="id"></id>
+        <result column="last_name" property="lastname"></result>
+        <result column="email" property="email"></result>
+        <result column="gender" property="gender"></result>
+<!--        指定的联合JavaBean对象   property 指的是哪个属性是联合对象 这里是部门   javatype 这的是属性对线的类型-->
+        <association property="dept" javaType="Dept">
+<!--            这里是的did是别名  这个和上面的id可能会有冲突-->
+            <id column="did" property="id"></id>
+            <result column="dept_name" property="deptName"></result>
+        </association>
+    </resultMap>
+
+    <!--  鉴别器 重新定制规则-->
+    <resultMap id="myEmp5" type="employee">
+        <id column="id" property="id"></id>
+        <result column="last_name" property="lastname"></result>
+        <result column="email" property="email"></result>
+        <result column="gender" property="gender"></result>
+        <discriminator javaType="string" column="gender">
+            <!--           gender值为0执行这个操作 查出部门信息 -->
+            <case value="0" resultType="employee">
+                <association property="dept" select="com.jiang.employeeDao.deptMapper.getDept" column="d_id"></association>
+            </case>
+            <!--           gender值为1执行这个操作 将last_name的值赋值给email -->
+            <case value="1" resultType="employee">
+                <id column="id" property="id"></id>
+                <result column="last_name" property="lastname"></result>
+                <result column="last_name" property="email"></result>
+                <result column="gender" property="gender"></result>
+            </case>
+        </discriminator>
+    </resultMap>
+    <select id="getEmpAndDept" resultMap="myEmp2">
+        SELECT e.id id,e.last_name last_name,e.email email,e.gender gender,d.id did,d.dept_name dept_name
+        from tab_employee e,tab_dept d WHERE e.d_id=d.id and e.id=#{id};
+    </select>
+
+<!--    分步查询 先根据员工信息查询员工信息   根据员工信息的d_id去部门表查出部门信息   部门设置到员工中-->
+    <resultMap id="myEmp4"  type="employee">
+        <id column="id" property="id"></id>
+        <result column="last_name" property="lastname"></result>
+        <result column="email" property="email"></result>
+        <result column="gender" property="gender"></result>
+<!--        select :指出当前属性是调用select指定的方法查出结果
+             column d_id：指出将tab_employee表中查询出d_id的哪一列传给这个方法 d_id这一列 有外键约束 然后通过这个d_id 找出部门信息
+              流程：使用select指定的方法查出对象 并封装给property属性 （dept）-->
+        <association property="dept" select="com.jiang.employeeDao.deptMapper.getDept" column="d_id"></association>
+    </resultMap>
+<!--    分步查询 -->
+    <select id="getEmpBYIdStep" resultMap="myEmp4">
+        select *
+        from tab_employee
+        where id = #{id};
+    </select>
+<!--    分布查询还可以延迟加载
+         Employee获得Dept
+         每次查询Employee对象时候都会一起加载
+         部门信息可以再我们使用的时候再去查询
+         分段查询基础上加上两个配置  <setting name="lazyLoadingEnabled" value="true"/>
+                                   <setting name="aggressiveLazyLoading" value="false"/>
+ -->
+<!-- dept的分布查询中的第二步在这 通过部门的ID查找员工  -->
+    <select id="getEmpByDeptId" resultType="employee" >
+        select * from tab_employee where d_id=#{did}
+    </select>
+
+
+</mapper>
